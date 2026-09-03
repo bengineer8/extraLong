@@ -11,11 +11,11 @@ class extraLong{
 
         extraLong(){}
 
-        bool isNeg(extraLong N){ return (N.val.back()>>63) == 1; }
+        bool isNeg(const extraLong& N){ return isNeg(N.val); }
 
-        bool isNeg(std::vector<uint64_t> v){ return (v.back()>>63) == 1; }
+        bool isNeg(const std::vector<uint64_t>& v){ return v.size() > 0 && (v.back()>>63) == 1; }
 
-        uint64_t ulongat(std::vector<uint64_t> v, int n){
+        uint64_t ulongat(const std::vector<uint64_t>& v, int n){
            if(n > -1){
                 if(v.size() > n) return v[n];
                 if(isNeg(v)) return -1;
@@ -23,7 +23,7 @@ class extraLong{
             return 0;
         }
 
-        uint64_t ulongat(int64_t N, int n){
+        uint64_t ulongat(const int64_t& N, int n){
             if(n > 0){
                 if(N < 0) return -1;
                 return 0;
@@ -31,9 +31,11 @@ class extraLong{
             return N;
         }
 
-        void prune(std::vector<uint64_t>& v){ for(int n = v.size()-1; ( (v[n] == 0 && v[n-1]>>63 == 0) || (v[n] == -1 && v[n-1]>>63 == 1) ) && n > 0; n--) v.pop_back(); }
+        void prune(std::vector<uint64_t>& v){
+            for(int n = v.size()-1; n > 0 && ( (v[n] == 0 && v[n-1]>>63 == 0) || (v[n] == -1 && v[n-1]>>63 == 1) ); n--) v.pop_back();
+        }
 
-        extraLong addosub(std::vector<uint64_t> a, std::vector<uint64_t> b, bool sub){
+        extraLong addosub(const std::vector<uint64_t> &a, const std::vector<uint64_t> &b, bool sub){
             uint64_t mask;
             if(sub) mask = -1;
             else mask = 0;
@@ -57,7 +59,7 @@ class extraLong{
             return c;
         }
 
-        extraLong addosub(std::vector<uint64_t> a, int64_t b, bool sub){
+        extraLong addosub(const std::vector<uint64_t> &a, int64_t b, bool sub){
             uint64_t mask;
             if(sub) mask = -1;
             else mask = 0;
@@ -87,7 +89,7 @@ class extraLong{
 
         extraLong operator+ (const extraLong &b){ return addosub(val,b.val,false); }
 
-        extraLong operator+ (const int64_t &b){ return addosub(val,b,false); }
+        extraLong operator+ (const int64_t b){ return addosub(val,b,false); }
 
         extraLong operator- (const extraLong &b){ return addosub(val,b.val,true); }
 
@@ -149,16 +151,16 @@ class extraLong{
         bool operator== (int64_t B){ return val.size() == 1 && val[0] == B; }
 };
 
-bool isNeg(extraLong N){ return (N.val.back()>>63) == 1; }
+bool isNeg(extraLong N){ return N.val.size() > 0 && (N.val.back()>>63) == 1; }
 
 
-int sign(extraLong N){
+int sign(const extraLong& N){
     if(isNeg(N)) return -1;
     return 1;
 }
 
 
-uint64_t ulongat(extraLong N, int n){
+uint64_t ulongat(const extraLong& N, int n){
     if(n > -1){
         if(N.val.size() > n) return N.val[n];
         if(isNeg(N)) return -1;
