@@ -11,8 +11,6 @@ class extraLong{
 
         extraLong(){}
 
-        bool isNeg(const extraLong& N){ return isNeg(N.val); }
-
         bool isNeg(const std::vector<uint64_t>& v){ return v.size() > 0 && (v.back()>>63) == 1; }
 
         uint64_t ulongat(const std::vector<uint64_t>& v, int n){
@@ -142,7 +140,7 @@ class extraLong{
         extraLong operator>> (int shift){ return greatshiftlr(val,-shift); }
 
         bool operator== (extraLong B){
-            if(val.size() != B.val.size() || isNeg(val)^isNeg(B)) return false;
+            if(val.size() != B.val.size() || isNeg(val)^isNeg(B.val)) return false;
             bool equal = true;
             for(int n = 0; n < val.size() && equal; equal = val[n] == B.val[n++]);
             return equal;
