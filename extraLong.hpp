@@ -140,10 +140,7 @@ class extraLong{
         extraLong operator>> (int shift){ return greatshiftlr(val,-shift); }
 
         bool operator== (extraLong B){
-            if(val.size() != B.val.size() || isNeg(val)^isNeg(B.val)) return false;
-            bool equal = true;
-            for(int n = 0; n < val.size() && equal; equal = val[n] == B.val[n++]);
-            return equal;
+            return val == B.val;
         }
 
         bool operator== (int64_t B){ return val.size() == 1 && val[0] == B; }
